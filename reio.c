@@ -19,27 +19,27 @@
 +
 */
 
-# include "malloc.h"
+# include "reio.h"
 
 void* reec_malloc ( int length ) {
 
-	//	author : WANG QUANWEI
+	//	author : Jelo Wang
 	//	since : 20100419
 	//	(C)TOK
 
-	return malloc ( length ) ;
+	return REECMALLOC ( length ) ;
 	
 }
 
 void recc_free ( void* buffer ) {
 
-	//	author : WANG QUANWEI
+	//	author : Jelo Wang
 	//	since : 20100419
 	//	(C)TOK
 
 	if ( !buffer ) return ;
 	
-	free ( buffer ) ;
+	REECFREE ( buffer ) ;
 	
 }
 

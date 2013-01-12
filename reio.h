@@ -19,5 +19,18 @@
 +
 */
 
+# ifndef __REEC_IO__
+
+# ifdef WIN32
+# include "malloc.h"
+# endif
+
+# define REECMALLOC malloc
+# define REECFREE free
+# define REECMEMSET memset 
+
 void* reec_malloc ( int length ) ;
 void recc_free ( void* buffer ) ;
+
+# endif
+
