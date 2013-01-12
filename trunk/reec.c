@@ -22,9 +22,14 @@
 
 #include "rex.h"
 
+# define REEC_BENCHMARK
+# ifdef REEC_BENCHMARK
+# include <time.h>
+# endif
+
 int match_alpha_normal_limit_pattern( int alpha ) { 
 	
-	//	author: WANG QUANWEI
+	//	author: Jelo Wang
 	//	since : 20090528
 	//	(C)TOK
 	
@@ -114,7 +119,7 @@ int match_alpha_normal_limit_pattern( int alpha ) {
 
 int match_alpha_none_limit_pattern ( int alpha )	{ 
 	
-	//	author: WANG QUANWEI
+	//	author: Jelo Wang
 	//	since : 20090528
 	//	(C)TOK	
 
@@ -198,7 +203,7 @@ int match_alpha_none_limit_pattern ( int alpha )	{
 	
 int match_alpha_scale_limit_pattern ( int alpha ) { 
 	
-	//	author: WANG QUANWEI
+	//	author: Jelo Wang
 	//	since : 20090528
 	//	(C)TOK	
 	
@@ -295,7 +300,7 @@ int match_alpha_scale_limit_pattern ( int alpha ) {
 
 int match_alpha_scale_none_limit_pattern ( int alpha ) { 
 	
-	//	author: WANG QUANWEI
+	//	author: Jelo Wang
 	//	since : 20090528
 	//	(C)TOK	
 
@@ -378,7 +383,7 @@ int match_alpha_scale_none_limit_pattern ( int alpha ) {
 
 int match_digit_pattern( int type ) {
 	
-	//	author: WANG QUANWEI
+	//	author: Jelo Wang
 	//	since : 20090528
 	//	(C)TOK	
 
@@ -493,7 +498,7 @@ int match_digit_pattern( int type ) {
 
 int match_symbol_pattern( int type ) {
 	
-	//	author: WANG QUANWEI
+	//	author: Jelo Wang
 	//	since : 20090528
 	//	(C)TOK	
 
@@ -701,7 +706,7 @@ int match_symbol_pattern( int type ) {
 
 int match_all_symbol_pattern( int type ) {
 
-	//	author: WANG QUANWEI
+	//	author: Jelo Wang
 	//	since : 20090529
 	//	(C)TOK	
 
@@ -767,7 +772,7 @@ int match_all_symbol_pattern( int type ) {
 
 int match_digit_alpha_pattern( int type ) {
 	
-	//	author: WANG QUANWEI
+	//	author: Jelo Wang
 	//	since : 20090530
 	//	(C)TOK	
 
@@ -1078,7 +1083,7 @@ int match_digit_alpha_pattern( int type ) {
 
 void regular_expression_atom_logical_operation( int operation , int type , int _expression_scope ) {
 
-	//	author: WANG QUANWEI
+	//	author: Jelo Wang
 	//	since : 20090529
 	//	(C)TOK	
 
@@ -1154,7 +1159,7 @@ void regular_expression_atom_logical_operation( int operation , int type , int _
 
 int regular_expression_atom_analyze () {
 
-	//	author: WANG QUANWEI
+	//	author: Jelo Wang
 	//	since : 20090528
 	//	(C)TOK	
 
@@ -1527,7 +1532,7 @@ int regular_expression_atom_analyze () {
 	
 int regular_expression_atom_matching( int type , RegularExpressionsAtom* regularexpressionsatom) {
 	
-	//	author: WANG QUANWEI
+	//	author: Jelo Wang
 	//	since : 20090528
 	//	(C)TOK	
 
@@ -1737,7 +1742,7 @@ int regular_expression_atom_matching( int type , RegularExpressionsAtom* regular
 
 int regular_expression_atom_matching_begin () {
 	
-	//	author: WANG QUANWEI
+	//	author: Jelo Wang
 	//	since : 20100330
 	//	(C)TOK
 	
@@ -1840,7 +1845,7 @@ restart:
 
 int regular_expression_atom_nested_matching () {
 	
-	//	author: WANG QUANWEI
+	//	author: Jelo Wang
 	//	since : 20100330
 	//	(C)TOK
 	
@@ -1942,15 +1947,20 @@ restart:
 
 }
 
-
-# if 1
 int TOKRegularExpressionEngineBooleanRun( char* regular_expression , char* string , int level ) {
 	
-	//	author: WANG QUANWEI
+	//	author: Jelo Wang
 	//	since : 20090528
 	//	(C)TOK	
 
 	//模式串與輸入串比較，如果匹配成功，返回布爾值真
+
+# ifdef REEC_BENCHMARK
+	int parserstime = 0 ;
+	int parseretime = 0 ;
+	int rexstime = 0 ;
+	int rexetime = 0 ;	
+# endif
 	
 	if ( !regular_expression || !string )
 		return 0 ;
@@ -1959,11 +1969,16 @@ int TOKRegularExpressionEngineBooleanRun( char* regular_expression , char* strin
 
 	_string_destroy( &pattern_elements_matched ) ;
 	_regular_expressions_atom_table_initialize () ;
-
+	
 	_string_initialize( &regular_expressions , regular_expression ) ;
 	_string_initialize( &object_string , string ) ;
 	_string_initialize_with_length( &pattern_elements_matched , strlen(string) + 1 ) ;
-	
+
+
+# ifdef REEC_BENCHMARK
+	parserstime = clock () ;
+# endif
+
 	if ( 0 == regular_expression_atom_analyze () ) {
 		_regular_expressions_atom_table_destroy () ;
 		_string_destroy( &regular_expressions ) ;
@@ -1971,7 +1986,16 @@ int TOKRegularExpressionEngineBooleanRun( char* regular_expression , char* strin
 		_string_destroy( &pattern_elements_matched ) ;
 		ReecNestedFormAtomDestroy (&rex_nested_form) ;
 		return 0 ;
-	}	
+	}
+	
+# ifdef REEC_BENCHMARK
+	parseretime = clock () ;
+	printf ( "Rex Parsing Cost : %d\n" , parseretime-parserstime ) ;
+# endif
+
+# ifdef REEC_BENCHMARK
+	rexstime = clock () ;
+# endif
 
 	if ( 0 < rex_nested_form.totall_nest ) {
 		if (!regular_expression_atom_nested_matching()) {
@@ -2011,17 +2035,27 @@ int TOKRegularExpressionEngineBooleanRun( char* regular_expression , char* strin
 	_string_destroy( &object_string ) ;
 	_string_destroy( &pattern_elements_matched ) ;
 
+# ifdef REEC_BENCHMARK
+	rexetime = clock () ;
+	printf ( "Rex Decoding Cost : %d\n" , rexetime-rexstime ) ;
+# endif
+
 	return 1 ;
 
 }
-# endif
-
 
 char* TOKRegularExpressionEngineRun( char* regular_expression , char* string , int level ) {
 	
-	//	author: WANG QUANWEI
+	//	author: Jelo Wang
 	//	since : 20090528
 	//	(C)TOK	
+
+# ifdef REEC_BENCHMARK
+	int parserstime = 0 ;
+	int parseretime = 0 ;
+	int rexstime = 0 ;
+	int rexetime = 0 ;	
+# endif
 
 	if ( !regular_expression || !string )
 		return 0 ;
@@ -2035,7 +2069,11 @@ char* TOKRegularExpressionEngineRun( char* regular_expression , char* string , i
 	_string_initialize( &regular_expressions , regular_expression ) ;
 	_string_initialize( &object_string , string ) ;
 	_string_initialize_with_length( &pattern_elements_matched , strlen(string) + 1 ) ;
-	
+
+# ifdef REEC_BENCHMARK
+	parserstime = clock () ;
+# endif
+
 	if ( 0 == regular_expression_atom_analyze () ) {
 		_string_destroy( &regular_expressions ) ;
 		_string_destroy( &object_string ) ;
@@ -2044,6 +2082,15 @@ char* TOKRegularExpressionEngineRun( char* regular_expression , char* string , i
 		ReecNestedFormAtomDestroy (&rex_nested_form) ;
 		return 0 ;
 	}		
+
+# ifdef REEC_BENCHMARK
+	parseretime = clock () ;
+	printf ( "Rex Parsing Cost : %d\n" , parseretime-parserstime ) ;
+# endif
+
+# ifdef REEC_BENCHMARK
+	rexstime = clock () ;
+# endif
 
 	if ( 0 < rex_nested_form.totall_nest ) {
 		if (!regular_expression_atom_nested_matching()) {
@@ -2073,6 +2120,11 @@ char* TOKRegularExpressionEngineRun( char* regular_expression , char* string , i
 	
 	_string_add( &pattern_elements_matched , '\0' ) ;
 
+# ifdef REEC_BENCHMARK
+	rexetime = clock () ;
+	printf ( "Rex Decoding Cost : %d\n" , rexetime-rexstime ) ;
+# endif
+
 	return pattern_elements_matched.data ;
 
 }
@@ -2080,7 +2132,7 @@ char* TOKRegularExpressionEngineRun( char* regular_expression , char* string , i
 # if 0 
 int TOKRegularExpressionEnginePositionRun( char* regular_expression , char* string , int level ) {
 	
-	//	author: WANG QUANWEI
+	//	author: Jelo Wang
 	//	since : 20091120
 	//	(C)TOK	
 
@@ -2132,7 +2184,7 @@ int TOKRegularExpressionEnginePositionRun( char* regular_expression , char* stri
 
 void TOKRegularExpressionEngineDestroy() {
 
-	//	author: WANG QUANWEI
+	//	author: Jelo Wang
 	//	since : 20090530
 	//	(C)TOK	
 

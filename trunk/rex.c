@@ -38,7 +38,7 @@ int regular_pattern_matched = 0;
 
 void ReecNestedFormNewAtom ( REXNESTED_FROM* nested_form ) {
 
-	//	author : WANG QUANWEI
+	//	author : Jelo Wang
 	//	since : 20100330
 
 	REXNESTED_FROM* form = 0 ;
@@ -76,7 +76,7 @@ void ReecNestedFormNewAtom ( REXNESTED_FROM* nested_form ) {
 
 void ReecNestedFormAtomAddHandle ( REXNESTED_FROM* nested_form , RegularExpressionsAtom* handle ) {
 
-	//	author : WANG QUANWEI
+	//	author : Jelo Wang
 	//	since : 20100330
 
 	if ( 0 == handle ) return ;
@@ -100,7 +100,7 @@ void ReecNestedFormAtomAddHandle ( REXNESTED_FROM* nested_form , RegularExpressi
 
 void ReecNestedFormAtomDestroy ( REXNESTED_FROM* nested_form ) {
 
-	//	author : WANG QUANWEI
+	//	author : Jelo Wang
 	//	since : 20100331
 
 	REXNESTED_FROM* form_walker = 0 ;
@@ -134,7 +134,7 @@ void ReecNestedFormAtomDestroy ( REXNESTED_FROM* nested_form ) {
 
 void _regular_expressions_atom_table_initialize () {
 
-	//	author : WANG QUANWEI
+	//	author : Jelo Wang
 	//	(C)TOK
 	
 	regular_expressions_atom.next = 0;
@@ -144,7 +144,7 @@ void _regular_expressions_atom_table_initialize () {
 }
 void _regular_expressions_atom_walker_initialize () {
 
-	//	author : WANG QUANWEI
+	//	author : Jelo Wang
 	//	(C)TOK
 	
 	regular_expressions_atom_walker = regular_expressions_atom.next ;
@@ -155,7 +155,7 @@ void _regular_expressions_atom_walker_initialize () {
 
 int _regular_expressions_atom_add_node( int type ,char* token , int times , int max_times ) {
 
-	//	author : WANG QUANWEI
+	//	author : Jelo Wang
 	//	(C)TOK
 	
 	int length = strlen(token);
@@ -199,12 +199,14 @@ int _regular_expressions_atom_add_node( int type ,char* token , int times , int 
 		new_rex_aotm_node->next = 0 ;
 	}
 
+	regular_expressions_atom.totallatom ++ ;
+	
 }
 
 
 void _regular_expressions_atom_table_destroy () {
 
-	//	author : WANG QUANWEI
+	//	author : Jelo Wang
 	//	(C)TOK
 	
 	_regular_expressions_atom_walker_initialize () ;
@@ -212,7 +214,7 @@ void _regular_expressions_atom_table_destroy () {
 	while(regular_expressions_atom_walker){
 
 		regular_expressions_atom.next = regular_expressions_atom_walker -> next;
-
+		
 		if(0 <regular_expressions_atom_walker->pattern_token_length) {
 			if (regular_expressions_atom_walker->pattern_token)
 				FREE((regular_expressions_atom_walker->pattern_token));
@@ -223,6 +225,7 @@ void _regular_expressions_atom_table_destroy () {
 
 	}
 
+	REECMEMSET ( &regular_expressions_atom , 0 ,sizeof(RegularExpressionsAtom) ) ;
 
 }
 
@@ -230,7 +233,7 @@ void _regular_expressions_atom_table_destroy () {
 
 void _string_initialize ( STRING* string , char* ddata ) {
 
-	//	author : WANG QUANWEI
+	//	author : Jelo Wang
 	//	(C)TOK
 	
 	string->length = strlen(ddata);
@@ -247,7 +250,7 @@ void _string_initialize ( STRING* string , char* ddata ) {
 
 void _string_initialize_with_length ( STRING* string , int llength ) {
 
-	//	author : WANG QUANWEI
+	//	author : Jelo Wang
 	//	(C)TOK
 	
 	string->length = llength;
@@ -260,7 +263,7 @@ void _string_initialize_with_length ( STRING* string , int llength ) {
 
 void _string_add( STRING* string , char element ) {
 
-	//	author : WANG QUANWEI
+	//	author : Jelo Wang
 	//	(C)TOK
 	
 	if( string->walker != string->length){
@@ -274,7 +277,7 @@ void _string_add( STRING* string , char element ) {
 
 char _string_get( STRING string ) {
 
-	//	author : WANG QUANWEI
+	//	author : Jelo Wang
 	//	(C)TOK
 	
 	if ( _string_overflowed (string) ) return 0 ;
@@ -283,7 +286,7 @@ char _string_get( STRING string ) {
 
 int _string_overflowed( STRING string ) {
 
-	//	author : WANG QUANWEI
+	//	author : Jelo Wang
 	//	(C)TOK
 	
 	return ( string . walker >= string . length ) ? (1) : (0);
@@ -292,7 +295,7 @@ int _string_overflowed( STRING string ) {
 
 void _string_next( STRING* string ) {
 
-	//	author : WANG QUANWEI
+	//	author : Jelo Wang
 	//	(C)TOK
 	
 	string->walker ++ ;
@@ -300,7 +303,7 @@ void _string_next( STRING* string ) {
 
 void _string_destroy( STRING* string ) {
 
-	//	author : WANG QUANWEI
+	//	author : Jelo Wang
 	//	(C)TOK
 	
 	if ( string->data ) {
@@ -314,7 +317,7 @@ void _string_destroy( STRING* string ) {
 
 char _string_look( STRING string , int step ) {
 
-	//	author : WANG QUANWEI
+	//	author : Jelo Wang
 	//	(C)TOK
 	
 	if(step >= string . length)
@@ -329,7 +332,7 @@ char _string_look( STRING string , int step ) {
 
 void _string_walker_add ( STRING* string , int step ) {
 
-	//	author : WANG QUANWEI
+	//	author : Jelo Wang
 	//	(C)TOK
 	
 	string->walker = string->walker + step;
@@ -338,7 +341,7 @@ void _string_walker_add ( STRING* string , int step ) {
 
 void _string_reset_walker_with_element ( STRING* string , char element ) {
 
-	//	author : WANG QUANWEI
+	//	author : Jelo Wang
 	//	(C)TOK
 	
 	for(;string->walker < string->length && string->data[string->walker] != element;string->walker ++);
@@ -346,7 +349,7 @@ void _string_reset_walker_with_element ( STRING* string , char element ) {
 }
 void _string_add_token( STRING* string , char* token ) {
 
-	//	author : WANG QUANWEI
+	//	author : Jelo Wang
 	//	(C)TOK
 
 	
@@ -359,7 +362,7 @@ void _string_add_token( STRING* string , char* token ) {
 }
 
 
-//	edited : WANG QUANWEI
+//	edited : Jelo Wang
 //	since : 20090918
 //	pattern <(gtkings)^1><(.com)^1>
 //	pattern token : asdfsdfgtkingsasfasfd.comsdaf
@@ -372,7 +375,7 @@ void _string_add_token( STRING* string , char* token ) {
 
 void __restart_engine_ () {
 
-	//	author : WANG QUANWEI
+	//	author : Jelo Wang
 	//	(C)TOK
 	
 	regular_pattern_matched = 0;
@@ -383,7 +386,7 @@ void __restart_engine_ () {
 
 void __reset_engine_ () {
 
-	//	author : WANG QUANWEI
+	//	author : Jelo Wang
 	//	(C)TOK
 	
 	regular_pattern_matched = 0;

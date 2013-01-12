@@ -47,7 +47,7 @@ enum _alpha_ {
 
 enum _regular_expression_ {
 	
-	//author:WANG QUANWEI
+	//author:Jelo Wang
 	//since : 20090528
 
 	 __match_smart_alpha_normal_limit_pattern_,							//<(a-z)^1>
@@ -101,7 +101,7 @@ enum _regular_expression_ {
 
 enum REEC_STRICT_LEVEL {
 
-	//	author:WANG QUANWEI
+	//	author:Jelo Wang
 	//	since : 20100330
 	
 	//	LEVE 0 , allow pattern of string flow can not be continuous
@@ -114,7 +114,7 @@ enum REEC_STRICT_LEVEL {
 
 enum _RegularExpressionsAtomOperation {
 
-	//author: WANG QUANWEI
+	//author: Jelo Wang
 	//since : 20090529
 	
 
@@ -127,7 +127,7 @@ enum _RegularExpressionsAtomOperation {
 
 enum _RegularExpressionsAtomOperationPriority {
 
-	//author:WANG QUANWEI
+	//author:Jelo Wang
 	//since : 20090529
 	//(c)TOK
 
@@ -143,7 +143,7 @@ enum _RegularExpressionsAtomOperationPriority {
 
 enum RegularExpressionsAtom_Times {
 	
-	//author:WANG QUANWEI
+	//author:Jelo Wang
 	//since : 20090529
 
 	_normal_limit = 30,
@@ -155,7 +155,7 @@ enum RegularExpressionsAtom_Times {
 
 typedef struct REECMONI {
 	
-	//	author: WANG QUANWEI
+	//	author: Jelo Wang
 	//	since : 20100330
 	
 	//	(1) REEC_STRICT_LEVEL
@@ -167,12 +167,14 @@ typedef struct REECMONI {
 
 typedef struct REXAOTM {
 
-	//author:WANG QUANWEI
+	//author:Jelo Wang
 	//since : 20090528
 
 	//a regular expression contents two elements <matching token,condition> we call it as lexical atom
 	//'matching token' is the symbol that matching needed and the condition is a repeated times usually
 
+	int totallatom ;
+	
 	int pattern_type;
 	char* pattern_token;
 	int pattern_token_length;
@@ -196,7 +198,7 @@ typedef struct REXAOTM {
 
 typedef struct {
 
-	//	author: WANG QUANWEI
+	//	author: Jelo Wang
 	//	since : 20100330
 
 	RegularExpressionsAtom* rea_head ; 
@@ -206,7 +208,7 @@ typedef struct {
 
 typedef struct REXNESTED_FROMN {
 
-	//	author: WANG QUANWEI
+	//	author: Jelo Wang
 	//	since : 20100330
 
 	int totall_nest ;
@@ -219,7 +221,7 @@ typedef struct REXNESTED_FROMN {
 
 typedef struct {
 
-	//author:WANG QUANWEI
+	//author:Jelo Wang
 	//since : 20090528
 
 	char* data;
