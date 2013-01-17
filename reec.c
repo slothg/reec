@@ -1,8 +1,8 @@
 
 /*
 
-+	Regular Expression Engine for C language 1.2.1
-+	REEC 1.2.1
++	Regular Expression Engine for C language 1.2.2
++	REEC 1.2.2
 +	(C)TOK Jelo Wang
 
 +	Regular Engine is a free software created by (c) Techniques of Knowledge since 20090528,	
@@ -1928,14 +1928,24 @@ restart:
 
 
 		}
-
+		
 		_string_add( &pattern_elements_matched , '\0' ) ;
-		FREE(object_string.data) ;
-		object_string.data = (char* ) MALLOC ( pattern_elements_matched.walker + 1 ) ;
-		if ( 0 == object_string.data ) return 0 ;
-		strcpy(object_string.data,pattern_elements_matched.data) ;
-		object_string.walker = 0 ;
-		object_string.length = pattern_elements_matched.walker ;
+	
+		//	Jelo Wang Edited 2012.12.28
+		if ( 0 < strlen ( pattern_elements_matched.data ) ) {
+			
+			FREE(object_string.data) ;
+			object_string.data = (char* ) MALLOC ( pattern_elements_matched.walker + 1 ) ;
+			if ( 0 == object_string.data ) return 0 ;
+			strcpy(object_string.data,pattern_elements_matched.data) ;
+			object_string.walker = 0 ;
+			object_string.length = pattern_elements_matched.walker ;
+			
+		} else {
+			object_string.walker = 0 ;
+		}
+		//	Jelo Wang Editting Finished
+		
 		if ( nested_walker->nested_next ) {
 			pattern_elements_matched.walker = 0 ;
 			regular_pattern_matched = 0 ;
