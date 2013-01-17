@@ -1,8 +1,8 @@
 
 /*
 
-+	Regular Expression Engine for C language 1.2.1
-+	REEC 1.2.1
++	Regular Expression Engine for C language 1.2.2
++	REEC 1.2.2
 +	(C)TOK Jelo Wang
 
 +	Regular Engine is a free software created by (c) Techniques of Knowledge since 20090528,	
